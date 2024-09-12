@@ -131,6 +131,27 @@ export const Demo = () => {
 
     console.log('state', state)
 
+    const [draggedItem, setDraggedItem] = useState(null);
+
+    const handleDragStart = (index: any) => {
+        setDraggedItem(index);
+    };
+
+    const handleDragOver = (e: any, index: any) => {
+        e.preventDefault();
+        if (draggedItem !== null && draggedItem !== index) {
+            const _state = [...state];
+            const _draggedItem = _state.splice(draggedItem, 1)[0];
+            _state.splice(index, 0, _draggedItem);
+            setDraggedItem(index);
+            setState(_state);
+        }
+    };
+
+    const handleDrop = () => {
+        setDraggedItem(null);
+    };
+
     return (
         <>
             <Stack spacing={1} direction={"row"} width={'100%'} height={'90vh'}>
@@ -147,9 +168,15 @@ export const Demo = () => {
                     )
                 }
                 {
-                    state?.map((it: any) =>
+                    state?.map((it: any, index: any) =>
                         <Stack direction={'column'} spacing={1}>
-                            <Box display={it?.isCollapse ? 'none' : ''} height={'40px'} minWidth={'250px'} width={'auto'} border={'1px solid gray'} sx={{ p: "10px" }}>
+                            <Box
+                                key={index}
+                                draggable
+                                onDragStart={() => handleDragStart(index)}
+                                onDragOver={(e) => handleDragOver(e, index)}
+                                onDrop={handleDrop}
+                                display={it?.isCollapse ? 'none' : ''} height={'40px'} minWidth={'250px'} width={'auto'} border={'1px solid gray'} sx={{ p: "10px" }}>
                                 <Stack direction={'row'} sx={{ placeItems: 'center', justifyContent: 'space-between' }}>
                                     {it?.status}
                                     <Stack direction={'row'}>
