@@ -52,6 +52,8 @@ export const Demo = () => {
     const [status, setStatus] = useState("")
     const [selectedRow, setSelectedRow] = useState<any>("")
 
+    const [draggedItem, setDraggedItem] = useState(null);
+
     const handleClick = (el: any, cardState: boolean) => {
         let _state = state.map((it: any) => {
             if (el?.id === it?.id) {
@@ -128,10 +130,6 @@ export const Demo = () => {
         setState(state)
         handleStatusClose()
     }
-
-    console.log('state', state)
-
-    const [draggedItem, setDraggedItem] = useState(null);
 
     const handleDragStart = (index: any) => {
         setDraggedItem(index);
